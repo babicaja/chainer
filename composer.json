@@ -1,0 +1,13 @@
+{
+    "name": "babicaja/chainer",
+    "description": "Chain your actions and make complex work flows more readable",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Dejan Babić",
+            "email": "babicaja@gmail.com"
+        }
+    ],
+    "require": {}
+}

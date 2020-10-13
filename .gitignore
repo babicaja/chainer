@@ -1,0 +1,4 @@
+# Editors
+.idea/*
+# Composer
+/vendor/
