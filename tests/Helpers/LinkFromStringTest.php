@@ -1,0 +1,60 @@
+<?php
+
+namespace Tests\Helpers;
+
+use Chainer\Exceptions\NotCallable;
+use Chainer\Exceptions\NotResolvable;
+use Chainer\Utils\LinkClosure;
+use Chainer\Utils\LinkFromString;
+use PHPUnit\Framework\TestCase;
+use Tests\Stubs\ComplexTestClass;
+use Tests\Stubs\InvokableTestClass;
+use Tests\Stubs\PayloadLink;
+use Tests\Stubs\TestClass;
+
+class LinkFromStringTest extends TestCase
+{
+    /**
+     * @test
+     * @param $case
+     * @throws NotResolvable
+     * @throws NotCallable
+     * @dataProvider notResolvable
+     */
+    public function it_will_throw_a_NotResolvable_exception_if_the_passed_argument_is_not_a_resolvable_string($case)
+    {
+        $this->expectException(NotResolvable::class);
+        LinkFromString::resolve($case);
+    }
+
+    public function notResolvable()
+    {
+        return [
+            ["not-resolvable"],
+            [ComplexTestClass::class]
+        ];
+    }
+
+    /**
+     * @test
+     * @throws NotResolvable
+     * @throws NotCallable
+     */
+    public function it_will_throw_a_NotCallable_exception_if_the_resolved_class_from_string_is_not_callable()
+    {
+        $this->expectException(NotCallable::class);
+        LinkFromString::resolve(TestClass::class);
+    }
+
+    /** @test * */
+    public function it_will_resolve_a_Link_from_a_string_which_resolves_to_a_Link()
+    {
+        $this->assertInstanceOf(PayloadLink::class, LinkFromString::resolve(PayloadLink::class));
+    }
+
+    /** @test * */
+    public function it_can_resolve_a_LinkClosure_from_a_string_which_resolves_to_an_invokable_class()
+    {
+        $this->assertInstanceOf(LinkClosure::class, LinkFromString::resolve(InvokableTestClass::class));
+    }
+}

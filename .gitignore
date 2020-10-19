@@ -1,0 +1,13 @@
+# Editors
+.idea/*
+.vscode/*
+
+# Composer
+/vendor/
+
+# PHPUnit
+.phpunit.result.cache
+coverage.xml
+
+# php_cs
+.php_cs.cache
