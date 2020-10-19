@@ -3,13 +3,21 @@
     "description": "Chain your actions and make complex work flows more readable",
     "type": "library",
     "license": "MIT",
+  "keywords": [
+    "chain",
+    "link",
+    "flow",
+    "chain-of-responsibility"
+  ],
     "authors": [
-        {
-            "name": "Dejan Babić",
-            "email": "babicaja@gmail.com"
-        }
+      {
+        "name": "Dejan Babić",
+        "email": "babicaja@gmail.com"
+      }
     ],
-  "require": {},
+  "require": {
+    "php": "^7.4"
+  },
   "autoload": {
     "psr-4": {
       "Chainer\\": "src/"
@@ -24,12 +32,10 @@
     "phpunit/phpunit": "^9.4",
     "nunomaduro/phpinsights": "^1.14",
     "squizlabs/php_codesniffer": "^3.5",
-    "phpmd/phpmd": "^2.9",
-    "friendsofphp/php-cs-fixer": "^2.16"
+    "phpmd/phpmd": "^2.9"
   },
   "scripts": {
     "phpcs": "phpcs --standard=PSR12",
-    "phpmd": "phpmd codesize,controversial,design,naming,unusedcode",
-    "php-cs-fixer": "php-cs-fixer --rules=@PSR12"
+    "phpmd": "phpmd codesize,controversial,design,naming,unusedcode"
   }
 }
