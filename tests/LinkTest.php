@@ -5,8 +5,8 @@ namespace Tests;
 use Chainer\Exceptions\NotSupported;
 use Chainer\Utils\LinkClosure;
 use PHPUnit\Framework\TestCase;
-use Tests\Stubs\ResponseLinkOne;
 use Tests\Stubs\PayloadLink;
+use Tests\Stubs\ResponseLinkOne;
 use Tests\Stubs\ResponseLinkTwo;
 use Tests\Stubs\TestClass;
 
@@ -33,7 +33,7 @@ class LinkTest extends TestCase
     /** @test **/
     public function it_can_run_its_own_logic_with_execute()
     {
-        $this->assertEquals(ResponseLinkOne::RESPONSE, $this->linkOne->execute());
+        $this->assertArrayHasKey(ResponseLinkOne::class, $this->linkOne->handle([]));
     }
 
     /** @test **/
@@ -59,7 +59,9 @@ class LinkTest extends TestCase
     public function it_can_execute_all_the_links_in_the_chain_with_run()
     {
         $this->linkOne->then($this->linkTwo);
-        $this->assertEquals(ResponseLinkOne::RESPONSE . ResponseLinkTwo::RESPONSE, $this->linkOne->run());
+        $response = $this->linkOne->run([]);
+        $this->assertArrayHasKey(ResponseLinkOne::class, $response);
+        $this->assertArrayHasKey(ResponseLinkTwo::class, $response);
     }
 
     /** @test **/
@@ -74,13 +76,6 @@ class LinkTest extends TestCase
     public function it_will_throw_a_NotSupported_exception_if_the_argument_passed_to_then_is_not_supported()
     {
         $this->expectException(NotSupported::class);
-        $this->linkOne->then(null);
-    }
-
-    /** @test **/
-    public function it_can_be_invoked()
-    {
-        $link = $this->linkOne;
-        $this->assertEquals(ResponseLinkOne::RESPONSE, $link());
+        $this->linkOne->then([]);
     }
 }

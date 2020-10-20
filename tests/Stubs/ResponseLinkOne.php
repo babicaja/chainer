@@ -9,16 +9,14 @@ class ResponseLinkOne extends Link
     const RESPONSE = "LinkOne response";
 
     /**
-     * Execute link.
+     * Handle payload.
      *
-     * @param $payload
+     * @param mixed $payload
      * @return mixed
      */
-    public function execute($payload = null)
+    public function handle($payload = null)
     {
-        if (is_null($payload)) {
-            $payload = "";
-        }
-        return $payload . self::RESPONSE;
+        $payload[__CLASS__] = self::RESPONSE;
+        return $payload;
     }
 }

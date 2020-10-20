@@ -19,10 +19,8 @@ abstract class Link
     /**
      * Set the next link in the chain.
      *
-     * @param $link Link|callable|string
-     * @throws Exceptions\NotCallable
+     * @param Link|callable|string $link
      * @throws Exceptions\NotResolvable
-     * @throws Exceptions\NotLinkInstance
      * @throws NotSupported
      */
     public function then($link): Link
@@ -33,29 +31,20 @@ abstract class Link
     /**
      * Execute current link and run the next one if it is defined.
      *
-     * @param null $payload
+     * @param mixed $payload
      * @return mixed
      */
     public function run($payload = null)
     {
-        $result = $this->execute($payload);
+        $result = $this->handle($payload);
         return $this->link ? $this->link->run($result) : $result;
     }
 
     /**
-     * Execute link.
+     * Handle payload.
      *
      * @param mixed $payload
      * @return mixed
      */
-    abstract public function execute($payload = null);
-
-    /**
-     * @param null $payload
-     * @return mixed
-     */
-    public function __invoke($payload = null)
-    {
-        return $this->execute($payload);
-    }
+    abstract public function handle($payload = null);
 }

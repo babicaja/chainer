@@ -4,22 +4,16 @@ declare(strict_types=1);
 
 namespace Chainer\Utils;
 
-use Chainer\Contracts\LinkResolver as LinkResolverContract;
-use Chainer\Exceptions\NotCallable;
-use Chainer\Exceptions\NotLinkInstance;
 use Chainer\Exceptions\NotResolvable;
 use Chainer\Exceptions\NotSupported;
 use Chainer\Link;
 
-final class LinkResolver implements LinkResolverContract
+final class LinkResolver
 {
     /**
-     * @param $link Link|callable|string
-     * @return Link
-     * @throws NotSupported
-     * @throws NotCallable
-     * @throws NotLinkInstance
+     * @param Link|callable|string $link
      * @throws NotResolvable
+     * @throws NotSupported
      */
     public static function resolve($link): Link
     {
@@ -35,6 +29,6 @@ final class LinkResolver implements LinkResolverContract
             return LinkFromString::resolve($link);
         }
 
-        throw new NotSupported();
+        throw new NotSupported($link);
     }
 }

@@ -9,8 +9,12 @@ use Throwable;
 
 final class NotSupported extends Exception
 {
-    public function __construct(?Throwable $previous = null)
+    /**
+     * @param mixed $type
+     */
+    public function __construct($type, ?Throwable $previous = null)
     {
-        parent::__construct("The provided argument is not supported", 400, $previous);
+        $type = !$type ? 'null' : gettype($type);
+        parent::__construct("{$type} can't be linked", 400, $previous);
     }
 }

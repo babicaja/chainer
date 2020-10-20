@@ -20,12 +20,12 @@ final class LinkClosure extends Link
     }
 
     /**
-     * Execute link.
+     * Handle payload.
      *
-     * @param $payload
+     * @param mixed $payload
      * @return mixed
      */
-    public function execute($payload = null)
+    public function handle($payload = null)
     {
         return call_user_func_array($this->callable, [$payload]);
     }

@@ -9,7 +9,8 @@ use Chainer\Exceptions\NotSupported;
 use Chainer\Utils\LinkResolver;
 
 /**
- * Class Chain
+ * Class Chain.
+ *
  * @package Chainer
  * @method static Link do($link)
  */
@@ -20,9 +21,8 @@ final class Chain
 
     /**
      * Chain constructor.
-     * @param $link
-     * @throws Exceptions\NotCallable
-     * @throws Exceptions\NotLinkInstance
+     *
+     * @param Link|callable|string $link
      * @throws Exceptions\NotResolvable
      * @throws NotSupported
      */
@@ -32,15 +32,10 @@ final class Chain
     }
 
     /**
-     * @param $name
-     * @param $arguments
-     * @return Chain
-     * @throws Exceptions\NotCallable
-     * @throws Exceptions\NotLinkInstance
      * @throws Exceptions\NotResolvable
      * @throws NotSupported
      */
-    public static function __callStatic($name, $arguments)
+    public static function __callStatic(string $name, iterable $arguments): Chain
     {
         if ($name !== 'do') {
             throw new BadMethodCallException();
@@ -50,17 +45,16 @@ final class Chain
     }
 
     /**
-     * @param $link
-     * @return $this
+     * @param Link|callable|string $link
      */
-    public function then($link)
+    public function then($link): Chain
     {
         $this->current = $this->current->then($link);
         return $this;
     }
 
     /**
-     * @param null $payload
+     * @param mixed $payload
      * @return mixed
      */
     public function run($payload = null)
