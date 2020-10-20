@@ -55,6 +55,7 @@ return [
     */
 
     'exclude' => [
+        'phpinsights.php'
         //  'path/to/directory-or-file'
     ],
 
@@ -66,7 +67,7 @@ return [
 
     'remove' => [
         DisallowMixedTypeHintSniff::class,
-        SpaceAfterNotSniff::class
+        SpaceAfterNotSniff::class,
     ],
 
     'config' => [
@@ -77,7 +78,7 @@ return [
             'linesCountBetweenAnnotationsGroups' => 0,
             'linesCountAfterLastContent' => 0,
             'annotationsGroups' => [],
-        ]
+        ],
         //  ExampleInsight::class => [
         //      'key' => 'value',
         //  ],
