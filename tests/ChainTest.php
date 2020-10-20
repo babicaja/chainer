@@ -73,6 +73,8 @@ class ChainTest extends TestCase
     /** @test **/
     public function it_can_execute_all_the_links_in_the_chain_with_run()
     {
-        $this->assertEquals(ResponseLinkOne::RESPONSE . ResponseLinkTwo::RESPONSE, Chain::do(ResponseLinkOne::class)->then(ResponseLinkTwo::class)->run());
+        $response = Chain::do(ResponseLinkOne::class)->then(ResponseLinkTwo::class)->run();
+        $this->assertArrayHasKey(ResponseLinkOne::class, $response);
+        $this->assertArrayHasKey(ResponseLinkTwo::class, $response);
     }
 }
