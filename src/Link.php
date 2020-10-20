@@ -36,15 +36,15 @@ abstract class Link
      */
     public function run($payload = null)
     {
-        $result = $this->execute($payload);
+        $result = $this->handle($payload);
         return $this->link ? $this->link->run($result) : $result;
     }
 
     /**
-     * Execute link.
+     * Handle payload.
      *
      * @param mixed $payload
      * @return mixed
      */
-    abstract public function execute($payload = null);
+    abstract public function handle($payload = null);
 }

@@ -33,7 +33,7 @@ class LinkTest extends TestCase
     /** @test **/
     public function it_can_run_its_own_logic_with_execute()
     {
-        $this->assertEquals(ResponseLinkOne::RESPONSE, $this->linkOne->execute());
+        $this->assertEquals(ResponseLinkOne::RESPONSE, $this->linkOne->handle());
     }
 
     /** @test **/

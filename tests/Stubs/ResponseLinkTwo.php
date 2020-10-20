@@ -14,7 +14,7 @@ class ResponseLinkTwo extends Link
      * @param $payload
      * @return mixed
      */
-    public function execute($payload = null)
+    public function handle($payload = null)
     {
         if (is_null($payload)) {
             $payload = "";

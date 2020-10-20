@@ -12,7 +12,7 @@ class PayloadLink extends Link
      * @param $payload
      * @return mixed
      */
-    public function execute($payload = null)
+    public function handle($payload = null)
     {
         return $payload;
     }
