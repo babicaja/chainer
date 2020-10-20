@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Chainer\Utils;
 
-use Chainer\Exceptions\NotCallable;
 use Chainer\Exceptions\NotResolvable;
 use Chainer\Exceptions\NotSupported;
 use Chainer\Link;
@@ -13,7 +12,6 @@ final class LinkResolver
 {
     /**
      * @param Link|callable|string $link
-     * @throws NotCallable
      * @throws NotResolvable
      * @throws NotSupported
      */

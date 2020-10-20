@@ -17,19 +17,9 @@ abstract class Link
     }
 
     /**
-     * @param mixed $payload
-     * @return mixed
-     */
-    public function __invoke($payload = null)
-    {
-        return $this->execute($payload);
-    }
-
-    /**
      * Set the next link in the chain.
      *
      * @param Link|callable|string $link
-     * @throws Exceptions\NotCallable
      * @throws Exceptions\NotResolvable
      * @throws NotSupported
      */

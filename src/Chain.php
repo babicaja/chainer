@@ -23,7 +23,6 @@ final class Chain
      * Chain constructor.
      *
      * @param Link|callable|string $link
-     * @throws Exceptions\NotCallable
      * @throws Exceptions\NotResolvable
      * @throws NotSupported
      */
@@ -33,7 +32,6 @@ final class Chain
     }
 
     /**
-     * @throws Exceptions\NotCallable
      * @throws Exceptions\NotResolvable
      * @throws NotSupported
      */

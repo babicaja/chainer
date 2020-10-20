@@ -5,8 +5,8 @@ namespace Tests;
 use Chainer\Exceptions\NotSupported;
 use Chainer\Utils\LinkClosure;
 use PHPUnit\Framework\TestCase;
-use Tests\Stubs\ResponseLinkOne;
 use Tests\Stubs\PayloadLink;
+use Tests\Stubs\ResponseLinkOne;
 use Tests\Stubs\ResponseLinkTwo;
 use Tests\Stubs\TestClass;
 
@@ -75,12 +75,5 @@ class LinkTest extends TestCase
     {
         $this->expectException(NotSupported::class);
         $this->linkOne->then(null);
-    }
-
-    /** @test **/
-    public function it_can_be_invoked()
-    {
-        $link = $this->linkOne;
-        $this->assertEquals(ResponseLinkOne::RESPONSE, $link());
     }
 }
