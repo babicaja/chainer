@@ -9,8 +9,8 @@ use Throwable;
 
 final class NotResolvable extends Exception
 {
-    public function __construct(?Throwable $previous = null)
+    public function __construct(string $class = 'class', ?Throwable $previous = null)
     {
-        parent::__construct("The FQN in not resolvable", 300, $previous);
+        parent::__construct("{$class} in not resolvable", 300, $previous);
     }
 }

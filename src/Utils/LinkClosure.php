@@ -22,7 +22,7 @@ final class LinkClosure extends Link
     /**
      * Execute link.
      *
-     * @param $payload
+     * @param mixed $payload
      * @return mixed
      */
     public function execute($payload = null)

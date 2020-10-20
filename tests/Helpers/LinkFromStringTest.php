@@ -4,6 +4,7 @@ namespace Tests\Helpers;
 
 use Chainer\Exceptions\NotCallable;
 use Chainer\Exceptions\NotResolvable;
+use Chainer\Exceptions\NotString;
 use Chainer\Utils\LinkClosure;
 use Chainer\Utils\LinkFromString;
 use PHPUnit\Framework\TestCase;
@@ -16,9 +17,6 @@ class LinkFromStringTest extends TestCase
 {
     /**
      * @test
-     * @param $case
-     * @throws NotResolvable
-     * @throws NotCallable
      * @dataProvider notResolvable
      */
     public function it_will_throw_a_NotResolvable_exception_if_the_passed_argument_is_not_a_resolvable_string($case)
@@ -37,8 +35,6 @@ class LinkFromStringTest extends TestCase
 
     /**
      * @test
-     * @throws NotResolvable
-     * @throws NotCallable
      */
     public function it_will_throw_a_NotCallable_exception_if_the_resolved_class_from_string_is_not_callable()
     {

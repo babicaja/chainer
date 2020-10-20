@@ -4,20 +4,18 @@ declare(strict_types=1);
 
 namespace Chainer\Utils;
 
-use Chainer\Contracts\LinkResolver;
 use Chainer\Exceptions\NotCallable;
 use Chainer\Exceptions\NotResolvable;
 use Chainer\Link;
 use Throwable;
 
-final class LinkFromString implements LinkResolver
+final class LinkFromString
 {
     /**
-     * @param $link
      * @throws NotCallable
      * @throws NotResolvable
      */
-    public static function resolve($link): Link
+    public static function resolve(string $link): Link
     {
         $link = self::make($link);
         self::check($link);
@@ -26,25 +24,24 @@ final class LinkFromString implements LinkResolver
     }
 
     /**
-     * @param string $link
-     * @return mixed
      * @throws NotResolvable
+     * @return mixed
      */
     private static function make(string $link)
     {
         if (!class_exists($link)) {
-            throw new NotResolvable();
+            throw new NotResolvable($link);
         }
 
         try {
             return new $link();
         } catch (Throwable $throwable) {
-            throw new NotResolvable($throwable);
+            throw new NotResolvable($link, $throwable);
         }
     }
 
     /**
-     * @param $link
+     * @param Link|callable|string $link
      * @throws NotCallable
      */
     private static function check($link): void

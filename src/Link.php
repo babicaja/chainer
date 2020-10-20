@@ -17,12 +17,20 @@ abstract class Link
     }
 
     /**
+     * @param mixed $payload
+     * @return mixed
+     */
+    public function __invoke($payload = null)
+    {
+        return $this->execute($payload);
+    }
+
+    /**
      * Set the next link in the chain.
      *
-     * @param $link Link|callable|string
+     * @param Link|callable|string $link
      * @throws Exceptions\NotCallable
      * @throws Exceptions\NotResolvable
-     * @throws Exceptions\NotLinkInstance
      * @throws NotSupported
      */
     public function then($link): Link
@@ -33,7 +41,7 @@ abstract class Link
     /**
      * Execute current link and run the next one if it is defined.
      *
-     * @param null $payload
+     * @param mixed $payload
      * @return mixed
      */
     public function run($payload = null)
@@ -49,13 +57,4 @@ abstract class Link
      * @return mixed
      */
     abstract public function execute($payload = null);
-
-    /**
-     * @param null $payload
-     * @return mixed
-     */
-    public function __invoke($payload = null)
-    {
-        return $this->execute($payload);
-    }
 }
