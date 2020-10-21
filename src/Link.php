@@ -9,12 +9,8 @@ use Chainer\Utils\LinkResolver;
 
 abstract class Link
 {
-    private ?Link $link;
-
-    public function __construct()
-    {
-        $this->link = null;
-    }
+    /** @var Link */
+    private Link $next;
 
     /**
      * Set the next link in the chain.
@@ -25,7 +21,7 @@ abstract class Link
      */
     public function then($link): Link
     {
-        return $this->link = LinkResolver::resolve($link);
+        return $this->next = LinkResolver::resolve($link);
     }
 
     /**
@@ -37,7 +33,7 @@ abstract class Link
     public function run($payload = null)
     {
         $result = $this->handle($payload);
-        return $this->link ? $this->link->run($result) : $result;
+        return isset($this->next) ? $this->next->run($result) : $result;
     }
 
     /**
