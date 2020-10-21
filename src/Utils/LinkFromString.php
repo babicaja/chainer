@@ -20,15 +20,11 @@ final class LinkFromString
     }
 
     /**
-     * @throws NotResolvable
      * @return mixed
+     * @throws NotResolvable
      */
     private static function make(string $link)
     {
-        if (!class_exists($link)) {
-            throw new NotResolvable($link);
-        }
-
         try {
             return new $link();
         } catch (Throwable $throwable) {

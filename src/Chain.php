@@ -16,7 +16,9 @@ use Chainer\Utils\LinkResolver;
  */
 final class Chain
 {
+    /** @var Link */
     private Link $first;
+    /** @var Link */
     private Link $current;
 
     /**
@@ -46,6 +48,8 @@ final class Chain
 
     /**
      * @param Link|callable|string $link
+     * @throws Exceptions\NotResolvable
+     * @throws NotSupported
      */
     public function then($link): Chain
     {

@@ -8,14 +8,11 @@ use Chainer\Link;
 
 final class LinkClosure extends Link
 {
-    /**
-     * @var callable
-     */
+    /** @var callable */
     private $callable;
 
     public function __construct(callable $callable)
     {
-        parent::__construct();
         $this->callable = $callable;
     }
 
