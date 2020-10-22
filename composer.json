@@ -36,6 +36,7 @@
   },
   "scripts": {
     "phpcs": "phpcs --standard=PSR12",
-    "phpmd": "phpmd codesize,controversial,design,naming,unusedcode"
+    "phpmd": "phpmd codesize,controversial,design,naming,unusedcode",
+    "test": "phpunit"
   }
 }
