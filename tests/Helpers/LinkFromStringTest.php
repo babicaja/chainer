@@ -2,6 +2,7 @@
 
 namespace Tests\Helpers;
 
+use Chainer\Exceptions\NotCallable;
 use Chainer\Exceptions\NotResolvable;
 use Chainer\Utils\LinkClosure;
 use Chainer\Utils\LinkFromString;
@@ -9,6 +10,7 @@ use PHPUnit\Framework\TestCase;
 use Tests\Stubs\ComplexTestClass;
 use Tests\Stubs\InvokableTestClass;
 use Tests\Stubs\PayloadLink;
+use Tests\Stubs\TestClass;
 
 class LinkFromStringTest extends TestCase
 {
@@ -28,6 +30,13 @@ class LinkFromStringTest extends TestCase
             ["not-resolvable"],
             [ComplexTestClass::class]
         ];
+    }
+
+    /** @test */
+    public function it_will_throw_a_NotCallable_exception_if_the_resolved_class_from_string_is_not_callable()
+    {
+        $this->expectException(NotCallable::class);
+        LinkFromString::resolve(TestClass::class);
     }
 
     /** @test * */
