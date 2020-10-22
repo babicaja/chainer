@@ -34,7 +34,7 @@ Chainer::do(TaskOne::class)
 The actions passed to the `Chainer\Chain` `then` method can be any of the following
 - Class extending the abstract `Chainer\Link`
 - Invokable class (implements `__invoke` method)
-- Callbacks/ Callables
+- Callbacks/Callables
 
 ### Extending Chainer\Link
 
@@ -97,9 +97,9 @@ $result = Chain::do(InvokableCatchTime::class)
 echo json_encode($result); //[1603359696,1603359697]
 ```
 
-### Callbacks / Callable
+### Callbacks/Callable
 
-Any valid Callback or callable is valid 
+Any valid `Callback` or `Callable` is valid 
 
 ```php
 use Chainer\Chain;
