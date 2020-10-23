@@ -32,3 +32,6 @@ jobs:
     
     - name: Run test suite
       run: composer test
+    
+    - name: Update Codecov
+      run: bash <(curl -s https://codecov.io/bash)
