@@ -32,7 +32,7 @@ abstract class Link
      */
     public function run($payload = null)
     {
-        $result = $this->handle($payload);
+        $result = $this->handle($payload) ?: $payload;
         return isset($this->next) ? $this->next->run($result) : $result;
     }
 
