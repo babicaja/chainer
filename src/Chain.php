@@ -12,7 +12,7 @@ use Chainer\Utils\LinkResolver;
  * Class Chain.
  *
  * @package Chainer
- * @method static Link do($link)
+ * @method static Chain do(Link|callable|string $link) Set the first link in the chain.
  */
 final class Chain
 {
@@ -23,6 +23,7 @@ final class Chain
 
     /**
      * Chain constructor.
+     * Set the first link in the chain.
      *
      * @param Link|callable|string $link
      * @throws Exceptions\NotResolvable
@@ -47,6 +48,8 @@ final class Chain
     }
 
     /**
+     * Set the next link in the chain.
+     *
      * @param Link|callable|string $link
      * @throws Exceptions\NotResolvable
      * @throws NotSupported
@@ -58,6 +61,8 @@ final class Chain
     }
 
     /**
+     * Execute all links in the chain.
+     *
      * @param mixed $payload
      * @return mixed
      */
