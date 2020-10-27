@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Helpers;
+namespace Tests\Utils;
 
 use Chainer\Exceptions\NotCallable;
 use Chainer\Exceptions\NotResolvable;
@@ -46,7 +46,7 @@ class LinkFromStringTest extends TestCase
     }
 
     /** @test * */
-    public function it_can_resolve_a_LinkClosure_from_a_string_which_resolves_to_an_invokable_class()
+    public function it_will_resolve_a_LinkClosure_from_a_string_which_resolves_to_an_invokable_class()
     {
         $this->assertInstanceOf(LinkClosure::class, LinkFromString::resolve(InvokableTestClass::class));
     }
