@@ -70,10 +70,18 @@ class ChainTest extends TestCase
         $this->assertInstanceOf(ResponseLinkTwo::class, $current->getValue($chain));
     }
 
-    /** @test **/
+    /** @test * */
     public function it_can_execute_all_the_links_in_the_chain_with_run()
     {
         $response = Chain::do(ResponseLinkOne::class)->then(ResponseLinkTwo::class)->run();
+        $this->assertArrayHasKey(ResponseLinkOne::class, $response);
+        $this->assertArrayHasKey(ResponseLinkTwo::class, $response);
+    }
+
+    /** @test * */
+    public function it_can_be_invoked_which_will_execute_all_the_links_in_the_chain()
+    {
+        $response = Chain::do(ResponseLinkOne::class)->then(ResponseLinkTwo::class)();
         $this->assertArrayHasKey(ResponseLinkOne::class, $response);
         $this->assertArrayHasKey(ResponseLinkTwo::class, $response);
     }
