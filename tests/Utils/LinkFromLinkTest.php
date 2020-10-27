@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Helpers;
+namespace Tests\Utils;
 
 use Chainer\Link;
 use Chainer\Utils\LinkFromLink;

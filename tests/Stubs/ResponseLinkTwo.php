@@ -6,7 +6,7 @@ use Chainer\Link;
 
 class ResponseLinkTwo extends Link
 {
-    const RESPONSE = "LinkTwo Response";
+    public const RESPONSE = "LinkTwo Response";
 
     /**
      * Handle payload.
