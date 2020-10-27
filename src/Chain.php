@@ -22,10 +22,10 @@ final class Chain
     private Link $current;
 
     /**
-     * Chain constructor.
      * Set the first link in the chain.
      *
      * @param Link|callable|string $link
+     * @throws Exceptions\NotCallable
      * @throws Exceptions\NotResolvable
      * @throws NotSupported
      */
@@ -37,6 +37,7 @@ final class Chain
     /**
      * @throws Exceptions\NotResolvable
      * @throws NotSupported
+     * @throws Exceptions\NotCallable
      */
     public static function __callStatic(string $name, iterable $arguments): Chain
     {
@@ -48,9 +49,21 @@ final class Chain
     }
 
     /**
+     * Execute all links in the chain.
+     *
+     * @param mixed $payload
+     * @return mixed
+     */
+    public function __invoke($payload = null)
+    {
+        return $this->first->run($payload);
+    }
+
+    /**
      * Set the next link in the chain.
      *
      * @param Link|callable|string $link
+     * @throws Exceptions\NotCallable
      * @throws Exceptions\NotResolvable
      * @throws NotSupported
      */

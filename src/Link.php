@@ -18,6 +18,7 @@ abstract class Link
      * @param Link|callable|string $link
      * @throws Exceptions\NotResolvable
      * @throws NotSupported
+     * @throws Exceptions\NotCallable
      */
     public function then($link): Link
     {
