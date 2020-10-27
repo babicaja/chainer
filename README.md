@@ -28,7 +28,7 @@ Chain actions and pass any type of payload through a simple interface
 Chain::do(TaskOne::class)
 ->then(TaskTwo::class)
 ->then(TaskThree::class)
-->run($request)
+->run($request);
 ```
 
 The actions passed to the `Chainer\Chain->then()` method can be any of the following
@@ -36,6 +36,7 @@ The actions passed to the `Chainer\Chain->then()` method can be any of the follo
 - [Chainer\Link Instance](#chainerlink-instance)
 - [Invokable Class](#invokable-class) 
 - [Callback / Callable](#callback--callable)
+- [Chainer\Chain Instance](#chainerchain-instance)
 
 ### Chainer\Link Instance
 
@@ -70,7 +71,6 @@ echo json_encode($result); //[1603357212,1603357213]
 
 ```php
 use Chainer\Chain;
-use Chainer\Link;
 
 class InvokableCatchTime
 {
@@ -96,7 +96,6 @@ echo json_encode($result); //[1603359696,1603359697]
 
 ```php
 use Chainer\Chain;
-use Chainer\Link;
 
 class CatchTime
 {
@@ -127,6 +126,20 @@ $result = Chain::do([new CatchTime(), 'catch'])
     ->run([]);
 
 echo json_encode($result); //[1603360373,1603360374,1603360375]
+```
+### Chainer\Chain Instance
+
+```php
+use Chainer\Chain;
+
+$chain = Chain::do(fn($payload) => $payload + 1)
+    ->then(fn($payload) => $payload + 2);
+
+$result = Chain::do($chain)
+    ->then(fn($payload) => $payload + 3)   
+    ->run(1);
+
+echo json_encode($result); //7
 ```
 
 ## Contributing
