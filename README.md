@@ -40,7 +40,7 @@ The actions passed to the `Chainer\Chain->then()` method can be any of the follo
 
 ### Link Instance
 
-|:information_source: Provide Link as an instance or fqn `Chain::do(new FirstAction())`  or `Chain::do(FirstAction::class)` |
+|:information_source: Provide the Link as an instance or fqn `Chain::do(new FirstAction())`  or `Chain::do(FirstAction::class)` |
 |----------------------------------------------------------------------------------------------------------------------------|
 
 ```php
@@ -86,76 +86,165 @@ Result
 ### Chain Instance
 
 ```php
+namespace Examples;
+
 use Chainer\Chain;
+use Chainer\Link;
 
-$chain = Chain::do(fn($payload) => $payload + 1)
-    ->then(fn($payload) => $payload + 2);
-
-$result = Chain::do($chain)
-    ->then(fn($payload) => $payload + 3)   
-    ->run(1);
-
-echo json_encode($result); //7
-```
-### Invokable Class
-
-```php
-use Chainer\Chain;
-
-class InvokableCatchTime
+class FirstAction extends Link
 {
-    /**
-     * @param mixed $payload
-     */
-    public function __invoke($payload = null)
+    public function handle($payload = null)
     {
-        sleep(1);
-        $payload[] = time();
+        $payload[] = __METHOD__;
         return $payload;
     }
 }
 
-$result = Chain::do(InvokableCatchTime::class)
-    ->then(new InvokableCatchTime())
+class SecondAction extends Link
+{
+    public function handle($payload = null)
+    {
+        $payload[] = __METHOD__;
+        return $payload;
+    }
+}
+
+$chain = Chain::do(FirstAction::class)
+    ->then(SecondAction::class);
+
+$result = Chain::do($chain)
+    ->then(FirstAction::class)
     ->run([]);
 
-echo json_encode($result); //[1603359696,1603359697]
+echo json_encode($result); 
+```
+
+Result
+
+```php
+[
+    "Examples\\FirstAction::handle",
+    "Examples\\SecondAction::handle",
+    "Examples\\FirstAction::handle"
+]
+```
+
+### Invokable Class
+
+|:information_source: Provide the Invokable class as an instance or fqn `Chain::do(new FirstAction())`  or `Chain::do(FirstAction::class)` |
+|----------------------------------------------------------------------------------------------------------------------------|
+
+```php
+namespace Examples;
+
+use Chainer\Chain;
+
+class FirstAction
+{
+    public function handle($payload = null)
+    {
+        $payload[] = __METHOD__;
+        return $payload;
+    }
+}
+
+class SecondAction
+{
+    public function handle($payload = null)
+    {
+        $payload[] = __METHOD__;
+        return $payload;
+    }
+}
+
+$result = Chain::do(FirstAction::class)
+    ->then(SecondAction::class)
+    ->run();
+
+echo json_encode($result); 
+```
+
+Result
+
+```php
+[
+    "Examples\\FirstAction::__invoke",
+    "Examples\\SecondAction::__invoke"
+]
 ```
 
 ### Callback / Callable
 
 ```php
+namespace Examples;
+
 use Chainer\Chain;
 
-class CatchTime
+function helper($payload)
 {
-    /** @param mixed $payload */
-    public function catch($payload = null)
+    $payload[] = __METHOD__;
+    return $payload;
+}
+
+class Util
+{
+    public function method($payload)
     {
-        sleep(1);
-        $payload[] = time();
+        $payload[] = __METHOD__;
         return $payload;
     }
-    
-    /** @param mixed $payload */
-    public static function staticCatch($payload = null)
+
+    public static function staticMethod($payload)
     {
-        sleep(1);
-        $payload[] = time();
+        $payload[] = __METHOD__;
         return $payload;
     }
 }
 
-$result = Chain::do([new CatchTime(), 'catch'])
-    ->then([CatchTime::class, 'staticCatch'])
-    ->then(function ($payload) {
-        sleep(1);
-        $payload[] = time();
-        return $payload;
-    })
-    ->run([]);
+class App
+{
+    public function run()
+    {
+        return Chain::do(fn($payload) => $this->method($payload))
+            ->then(fn($payload) => self::staticMethod($payload))
+            ->then([new Util(), 'method'])
+            ->then([Util::class, 'staticMethod'])
+            ->then('Examples\helper')
+            ->then(function ($payload) {
+                $payload[] = __METHOD__;
+                return $payload;
+            })
+            ->run([]);
+    }
 
-echo json_encode($result); //[1603360373,1603360374,1603360375]
+    private function method($payload)
+    {
+        $payload[] = __METHOD__;
+        return $payload;
+    }
+
+    private static function staticMethod($payload)
+    {
+        $payload[] = __METHOD__;
+        return $payload;
+    }
+}
+
+$app = new App();
+echo json_encode($app->run());
+```
+
+Result
+
+```php
+[
+    "Examples\\App::method",
+    "Examples\\App::staticMethod",
+    "Examples\\Util::method",
+    "Examples\\Util::staticMethod",
+    "Examples\\helper",
+    "Examples\\{closure}"
+]
 ```
 
 ## Contributing
