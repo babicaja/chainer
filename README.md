@@ -40,7 +40,7 @@ The actions passed to the `Chainer\Chain->then()` method can be any of the follo
 
 ### Link Instance
 
-|:information_source: Provide the Link as an instance or fqn `Chain::do(new FirstAction())`  or `Chain::do(FirstAction::class)` |
+|:information_source: Link can be an instance or fqn `Chain::do(new FirstAction())`  or `Chain::do(FirstAction::class)` |
 |----------------------------------------------------------------------------------------------------------------------------|
 
 ```php
@@ -131,7 +131,7 @@ Result
 
 ### Invokable Class
 
-|:information_source: Provide the Invokable class as an instance or fqn `Chain::do(new FirstAction())`  or `Chain::do(FirstAction::class)` |
+|:information_source: Invokable class can be an instance or fqn `Chain::do(new FirstAction())`  or `Chain::do(FirstAction::class)` |
 |----------------------------------------------------------------------------------------------------------------------------|
 
 ```php
@@ -141,7 +141,7 @@ use Chainer\Chain;
 
 class FirstAction
 {
-    public function handle($payload = null)
+    public function __invoke($payload = null)
     {
         $payload[] = __METHOD__;
         return $payload;
@@ -150,7 +150,7 @@ class FirstAction
 
 class SecondAction
 {
-    public function handle($payload = null)
+    public function __invoke($payload = null)
     {
         $payload[] = __METHOD__;
         return $payload;
