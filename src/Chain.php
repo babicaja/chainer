@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Chainer;
 
 use BadMethodCallException;
+use Chainer\Exceptions\NotCallable;
+use Chainer\Exceptions\NotResolvable;
 use Chainer\Exceptions\NotSupported;
 use Chainer\Utils\LinkResolver;
 
@@ -12,7 +14,7 @@ use Chainer\Utils\LinkResolver;
  * Class Chain.
  *
  * @package Chainer
- * @method static Chain do(Link|callable|string $link) Set the first link in the chain.
+ * @method static Chain do(Link|Chain|callable|string $link) Set the first link in the chain.
  */
 final class Chain
 {
@@ -22,11 +24,11 @@ final class Chain
     private Link $current;
 
     /**
-     * Chain constructor.
      * Set the first link in the chain.
      *
-     * @param Link|callable|string $link
-     * @throws Exceptions\NotResolvable
+     * @param Link|Chain|callable|string $link
+     * @throws NotCallable
+     * @throws NotResolvable
      * @throws NotSupported
      */
     public function __construct($link)
@@ -35,8 +37,9 @@ final class Chain
     }
 
     /**
-     * @throws Exceptions\NotResolvable
+     * @throws NotResolvable
      * @throws NotSupported
+     * @throws NotCallable
      */
     public static function __callStatic(string $name, iterable $arguments): Chain
     {
@@ -48,10 +51,22 @@ final class Chain
     }
 
     /**
+     * Execute all links in the chain.
+     *
+     * @param mixed $payload
+     * @return mixed
+     */
+    public function __invoke($payload = null)
+    {
+        return $this->first->run($payload);
+    }
+
+    /**
      * Set the next link in the chain.
      *
-     * @param Link|callable|string $link
-     * @throws Exceptions\NotResolvable
+     * @param Link|Chain|callable|string $link
+     * @throws NotCallable
+     * @throws NotResolvable
      * @throws NotSupported
      */
     public function then($link): Chain

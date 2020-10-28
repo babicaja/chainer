@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Chainer;
 
+use Chainer\Exceptions\NotCallable;
+use Chainer\Exceptions\NotResolvable;
 use Chainer\Exceptions\NotSupported;
 use Chainer\Utils\LinkResolver;
 
@@ -15,9 +17,10 @@ abstract class Link
     /**
      * Set the next link in the chain.
      *
-     * @param Link|callable|string $link
-     * @throws Exceptions\NotResolvable
+     * @param Link|Chain|callable|string $link
+     * @throws NotResolvable
      * @throws NotSupported
+     * @throws NotCallable
      */
     public function then($link): Link
     {

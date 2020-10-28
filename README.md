@@ -28,105 +28,223 @@ Chain actions and pass any type of payload through a simple interface
 Chain::do(TaskOne::class)
 ->then(TaskTwo::class)
 ->then(TaskThree::class)
-->run($request)
+->run('payload');
 ```
 
 The actions passed to the `Chainer\Chain->then()` method can be any of the following
 
-- [Chainer\Link Instance](#chainerlink-instance)
+- [Link Instance](#link-instance)
+- [Chain Instance](#chain-instance)
 - [Invokable Class](#invokable-class) 
 - [Callback / Callable](#callback--callable)
 
-### Chainer\Link Instance
+### Link Instance
+
+|:information_source: Link can be an instance or fqn `Chain::do(new FirstAction())`  or `Chain::do(FirstAction::class)` |
+|----------------------------------------------------------------------------------------------------------------------------|
 
 ```php
+namespace Examples;
+
 use Chainer\Chain;
 use Chainer\Link;
 
-class LinkCatchTime extends Link
+class FirstAction extends Link
 {
-    /**
-     * Handle payload.
-     *
-     * @param mixed $payload
-     * @return mixed
-     */
     public function handle($payload = null)
     {
-        sleep(1);
-        $payload[] = time();
+        $payload[] = __METHOD__;
         return $payload;
     }
 }
 
-$result = Chain::do(LinkCatchTime::class)
-    ->then(new LinkCatchTime())
+class SecondAction extends Link
+{
+    public function handle($payload = null)
+    {
+        $payload[] = __METHOD__;
+        return $payload;
+    }
+}
+
+$result = Chain::do(FirstAction::class)
+    ->then(SecondAction::class)
+    ->run();
+
+echo json_encode($result); 
+```
+
+Result
+
+```php
+[
+    "Examples\\FirstAction::handle",
+    "Examples\\SecondAction::handle"
+]
+```
+
+### Chain Instance
+
+```php
+namespace Examples;
+
+use Chainer\Chain;
+use Chainer\Link;
+
+class FirstAction extends Link
+{
+    public function handle($payload = null)
+    {
+        $payload[] = __METHOD__;
+        return $payload;
+    }
+}
+
+class SecondAction extends Link
+{
+    public function handle($payload = null)
+    {
+        $payload[] = __METHOD__;
+        return $payload;
+    }
+}
+
+$chain = Chain::do(FirstAction::class)
+    ->then(SecondAction::class);
+
+$result = Chain::do($chain)
+    ->then(FirstAction::class)
     ->run([]);
 
-echo json_encode($result); //[1603357212,1603357213]
+echo json_encode($result); 
+```
+
+Result
+
+```php
+[
+    "Examples\\FirstAction::handle",
+    "Examples\\SecondAction::handle",
+    "Examples\\FirstAction::handle"
+]
 ```
 
 ### Invokable Class
 
-```php
-use Chainer\Chain;
-use Chainer\Link;
+|:information_source: Invokable can be an instance or fqn `Chain::do(new FirstAction())`  or `Chain::do(FirstAction::class)` |
+|----------------------------------------------------------------------------------------------------------------------------|
 
-class InvokableCatchTime
+```php
+namespace Examples;
+
+use Chainer\Chain;
+
+class FirstAction
 {
-    /**
-     * @param mixed $payload
-     */
     public function __invoke($payload = null)
     {
-        sleep(1);
-        $payload[] = time();
+        $payload[] = __METHOD__;
         return $payload;
     }
 }
 
-$result = Chain::do(InvokableCatchTime::class)
-    ->then(new InvokableCatchTime())
-    ->run([]);
+class SecondAction
+{
+    public function __invoke($payload = null)
+    {
+        $payload[] = __METHOD__;
+        return $payload;
+    }
+}
 
-echo json_encode($result); //[1603359696,1603359697]
+$result = Chain::do(FirstAction::class)
+    ->then(SecondAction::class)
+    ->run();
+
+echo json_encode($result); 
+```
+
+Result
+
+```php
+[
+    "Examples\\FirstAction::__invoke",
+    "Examples\\SecondAction::__invoke"
+]
 ```
 
 ### Callback / Callable
 
 ```php
-use Chainer\Chain;
-use Chainer\Link;
+namespace Examples;
 
-class CatchTime
+use Chainer\Chain;
+
+function helper($payload)
 {
-    /** @param mixed $payload */
-    public function catch($payload = null)
+    $payload[] = __METHOD__;
+    return $payload;
+}
+
+class Util
+{
+    public function method($payload)
     {
-        sleep(1);
-        $payload[] = time();
+        $payload[] = __METHOD__;
         return $payload;
     }
-    
-    /** @param mixed $payload */
-    public static function staticCatch($payload = null)
+
+    public static function staticMethod($payload)
     {
-        sleep(1);
-        $payload[] = time();
+        $payload[] = __METHOD__;
         return $payload;
     }
 }
 
-$result = Chain::do([new CatchTime(), 'catch'])
-    ->then([CatchTime::class, 'staticCatch'])
-    ->then(function ($payload) {
-        sleep(1);
-        $payload[] = time();
-        return $payload;
-    })
-    ->run([]);
+class App
+{
+    public function run()
+    {
+        return Chain::do(fn($payload) => $this->method($payload))
+            ->then(fn($payload) => self::staticMethod($payload))
+            ->then([new Util(), 'method'])
+            ->then([Util::class, 'staticMethod'])
+            ->then('Examples\helper')
+            ->then(function ($payload) {
+                $payload[] = __METHOD__;
+                return $payload;
+            })
+            ->run([]);
+    }
 
-echo json_encode($result); //[1603360373,1603360374,1603360375]
+    private function method($payload)
+    {
+        $payload[] = __METHOD__;
+        return $payload;
+    }
+
+    private static function staticMethod($payload)
+    {
+        $payload[] = __METHOD__;
+        return $payload;
+    }
+}
+
+$app = new App();
+echo json_encode($app->run());
+```
+
+Result
+
+```php
+[
+    "Examples\\App::method",
+    "Examples\\App::staticMethod",
+    "Examples\\Util::method",
+    "Examples\\Util::staticMethod",
+    "Examples\\helper",
+    "Examples\\{closure}"
+]
 ```
 
 ## Contributing

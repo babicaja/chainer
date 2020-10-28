@@ -6,7 +6,7 @@ use Chainer\Link;
 
 class ResponseLinkOne extends Link
 {
-    const RESPONSE = "LinkOne response";
+    public const RESPONSE = "LinkOne response";
 
     /**
      * Handle payload.

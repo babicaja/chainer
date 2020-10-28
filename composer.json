@@ -1,16 +1,16 @@
 {
-    "name": "babicaja/chainer",
-    "description": "Chain your actions and make complex work flows more readable",
-    "type": "library",
-    "license": "MIT",
+  "name": "babicaja/chainer",
+  "description": "Chain your actions and make a complex workflow more readable",
+  "type": "library",
+  "license": "MIT",
   "keywords": [
     "chain",
     "link",
     "flow",
     "chain-of-responsibility"
   ],
-    "authors": [
-      {
+  "authors": [
+    {
         "name": "Dejan Babić",
         "email": "babicaja@gmail.com"
       }

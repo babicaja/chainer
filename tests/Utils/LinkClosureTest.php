@@ -1,7 +1,8 @@
 <?php
 
-namespace Tests;
+namespace Tests\Utils;
 
+use Chainer\Chain;
 use Chainer\Utils\LinkClosure;
 use PHPUnit\Framework\TestCase;
 use Tests\Stubs\InvokableTestClass;
@@ -26,7 +27,9 @@ class LinkClosureTest extends TestCase
             [[TestClass::class, "staticMethod"]],
             [function () {
             }],
-            [new InvokableTestClass()]
+            [new InvokableTestClass()],
+            [Chain::do(function () {
+            })]
         ];
     }
 }

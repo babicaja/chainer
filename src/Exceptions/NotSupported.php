@@ -14,7 +14,7 @@ final class NotSupported extends Exception
      */
     public function __construct($type, ?Throwable $previous = null)
     {
-        $type = !$type ? 'null' : gettype($type);
-        parent::__construct("{$type} can't be linked", 400, $previous);
+        $type = is_object($type) ? get_class($type) : gettype($type);
+        parent::__construct("{$type} can't be linked", 300, $previous);
     }
 }
