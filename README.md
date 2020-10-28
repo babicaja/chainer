@@ -131,7 +131,7 @@ Result
 
 ### Invokable Class
 
-|:information_source: Invokable class can be an instance or fqn `Chain::do(new FirstAction())`  or `Chain::do(FirstAction::class)` |
+|:information_source: Invokable can be an instance or fqn `Chain::do(new FirstAction())`  or `Chain::do(FirstAction::class)` |
 |----------------------------------------------------------------------------------------------------------------------------|
 
 ```php
