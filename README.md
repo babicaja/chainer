@@ -40,31 +40,47 @@ The actions passed to the `Chainer\Chain->then()` method can be any of the follo
 
 ### Link Instance
 
+|:information_source: Provide Link as an instance or fqn `Chain::do(new FirstAction())`  or `Chain::do(FirstAction::class)` |
+|----------------------------------------------------------------------------------------------------------------------------|
+
 ```php
+namespace Examples;
+
 use Chainer\Chain;
 use Chainer\Link;
 
-class LinkCatchTime extends Link
+class FirstAction extends Link
 {
-    /**
-     * Handle payload.
-     *
-     * @param mixed $payload
-     * @return mixed
-     */
     public function handle($payload = null)
     {
-        sleep(1);
-        $payload[] = time();
+        $payload[] = __METHOD__;
         return $payload;
     }
 }
 
-$result = Chain::do(LinkCatchTime::class)
-    ->then(new LinkCatchTime())
-    ->run([]);
+class SecondAction extends Link
+{
+    public function handle($payload = null)
+    {
+        $payload[] = __METHOD__;
+        return $payload;
+    }
+}
 
-echo json_encode($result); //[1603357212,1603357213]
+$result = Chain::do(FirstAction::class)
+    ->then(SecondAction::class)
+    ->run();
+
+echo json_encode($result); 
+```
+
+Result
+
+```php
+[
+    "Examples\\FirstAction::handle",
+    "Examples\\SecondAction::handle"
+]
 ```
 
 ### Chain Instance
