@@ -41,7 +41,7 @@ final class Chain
      * @throws NotSupported
      * @throws NotCallable
      */
-    public static function __callStatic(string $name, iterable $arguments): Chain
+    public static function __callStatic(string $name, array $arguments): Chain
     {
         if ($name !== 'do') {
             throw new BadMethodCallException();
