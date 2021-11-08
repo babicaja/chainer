@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Chainer\Utils;
 
+use Chainer\Chain;
 use Chainer\Exceptions\NotCallable;
 use Chainer\Exceptions\NotResolvable;
-use Chainer\Link;
 use Throwable;
 
 final class LinkFromString
@@ -15,39 +15,22 @@ final class LinkFromString
      * @throws NotResolvable
      * @throws NotCallable
      */
-    public static function resolve(string $link): Link
-    {
-        $link = self::make($link);
-
-        if ($link instanceof Link) {
-            return $link;
-        }
-
-        self::check($link);
-        return new LinkClosure($link);
-    }
-
-    /**
-     * @return mixed
-     * @throws NotResolvable
-     */
-    private static function make(string $link)
+    public static function resolve(string $link): LinkWrapper
     {
         try {
-            return new $link();
+            $resolved = new $link();
         } catch (Throwable $throwable) {
             throw new NotResolvable($link, $throwable);
         }
-    }
 
-    /**
-     * @param mixed $link
-     * @throws NotCallable
-     */
-    private static function check($link): void
-    {
-        if (!is_callable($link)) {
-            throw new NotCallable(get_class($link));
+        if ($resolved instanceof Chain) {
+            return LinkFromChain::resolve($resolved);
         }
+
+        if (is_callable($resolved)) {
+            return LinkFromCallable::resolve($resolved);
+        }
+
+        throw new NotCallable($link);
     }
 }

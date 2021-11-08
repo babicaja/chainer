@@ -4,7 +4,7 @@ namespace Tests\Utils;
 
 use Chainer\Exceptions\NotCallable;
 use Chainer\Exceptions\NotResolvable;
-use Chainer\Utils\LinkClosure;
+use Chainer\Utils\LinkWrapper;
 use Chainer\Utils\LinkFromString;
 use PHPUnit\Framework\TestCase;
 use Tests\Stubs\ComplexTestClass;
@@ -40,14 +40,8 @@ class LinkFromStringTest extends TestCase
     }
 
     /** @test * */
-    public function it_will_resolve_a_Link_from_a_string_which_resolves_to_a_Link()
-    {
-        $this->assertInstanceOf(PayloadLink::class, LinkFromString::resolve(PayloadLink::class));
-    }
-
-    /** @test * */
     public function it_will_resolve_a_LinkClosure_from_a_string_which_resolves_to_an_invokable_class()
     {
-        $this->assertInstanceOf(LinkClosure::class, LinkFromString::resolve(InvokableTestClass::class));
+        $this->assertInstanceOf(LinkWrapper::class, LinkFromString::resolve(InvokableTestClass::class));
     }
 }

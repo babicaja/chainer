@@ -3,9 +3,8 @@
 namespace Tests\Utils;
 
 use Chainer\Chain;
-use Chainer\Exceptions\NotSupported;
-use Chainer\Link;
 use Chainer\Utils\LinkResolver;
+use Chainer\Utils\LinkWrapper;
 use PHPUnit\Framework\TestCase;
 use Tests\Stubs\InvokableTestClass;
 use Tests\Stubs\PayloadLink;
@@ -15,33 +14,11 @@ class LinkResolverTest extends TestCase
 {
     /**
      * @test
-     * @dataProvider notSupported
-     */
-    public function it_will_throw_the_NotSupprted_exception_if_the_type_is_not_supported($case)
-    {
-        $this->expectException(NotSupported::class);
-        LinkResolver::resolve($case);
-    }
-
-    public function notSupported()
-    {
-        return [
-            [new TestClass()],
-            [[]],
-            [['content']],
-            [null],
-            [1],
-            [true]
-        ];
-    }
-
-    /**
-     * @test
      * @dataProvider supported
      */
     public function it_will_resolve_a_Link_from_supported_types($case)
     {
-        $this->assertInstanceOf(Link::class, LinkResolver::resolve($case));
+        $this->assertInstanceOf(LinkWrapper::class, LinkResolver::resolve($case));
     }
 
     public function supported()

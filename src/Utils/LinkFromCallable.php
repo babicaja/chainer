@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace Chainer\Utils;
 
-use Chainer\Link;
-
 final class LinkFromCallable
 {
-    public static function resolve(callable $link): Link
+    public static function resolve(callable $link): LinkWrapper
     {
-        return new LinkClosure($link);
+        return new LinkWrapper($link);
     }
 }

@@ -9,7 +9,7 @@ use Throwable;
 
 final class NotCallable extends Exception
 {
-    public function __construct(string $class = 'class', ?Throwable $previous = null)
+    public function __construct(string $class, ?Throwable $previous = null)
     {
         parent::__construct("{$class} in not callable", 100, $previous);
     }

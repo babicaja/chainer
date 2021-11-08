@@ -4,6 +4,7 @@ namespace Tests;
 
 use BadMethodCallException;
 use Chainer\Chain;
+use Chainer\Utils\LinkWrapper;
 use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
 use Tests\Stubs\InvokableTestClass;
@@ -17,7 +18,7 @@ class ChainTest extends TestCase
     /** @test **/
     public function it_can_be_instantiated_with_a_Link()
     {
-        $this->assertInstanceOf(Chain::class, new Chain(new PayloadLink()));
+        $this->assertInstanceOf(Chain::class, new Chain(new ResponseLinkOne()));
     }
 
     /**
@@ -41,20 +42,20 @@ class ChainTest extends TestCase
         ];
     }
 
-    /** @test **/
+    /** @test * */
     public function it_can_be_instantiated_statically_with_do()
     {
-        $this->assertInstanceOf(Chain::class, Chain::do(PayloadLink::class));
+        $this->assertInstanceOf(Chain::class, Chain::do(InvokableTestClass::class));
     }
 
-    /** @test **/
+    /** @test * */
     public function it_will_throw_a_BadMethodCallException_if_a_static_call_is_something_other_then_do()
     {
         $this->expectException(BadMethodCallException::class);
         Chain::somethingOther();
     }
 
-    /** @test **/
+    /** @test * */
     public function it_can_chain_links_with_then()
     {
         $chain = Chain::do(ResponseLinkOne::class)->then(ResponseLinkTwo::class);
@@ -66,8 +67,11 @@ class ChainTest extends TestCase
         $first->setAccessible(true);
         $current->setAccessible(true);
 
-        $this->assertInstanceOf(ResponseLinkOne::class, $first->getValue($chain));
-        $this->assertInstanceOf(ResponseLinkTwo::class, $current->getValue($chain));
+        $callable = new ReflectionProperty(LinkWrapper::class, 'callable');
+        $callable->setAccessible(true);
+
+        $this->assertEquals(ResponseLinkOne::RESPONSE, $callable->getValue($first->getValue($chain))::RESPONSE);
+        $this->assertEquals(ResponseLinkTwo::RESPONSE, $callable->getValue($current->getValue($chain))::RESPONSE);
     }
 
     /** @test * */

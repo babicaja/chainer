@@ -2,7 +2,7 @@
 
 namespace Tests\Utils;
 
-use Chainer\Utils\LinkClosure;
+use Chainer\Utils\LinkWrapper;
 use Chainer\Utils\LinkFromCallable;
 use PHPUnit\Framework\TestCase;
 use Tests\Stubs\InvokableTestClass;
@@ -16,7 +16,7 @@ class LinkFromCallableTest extends TestCase
      */
     public function it_can_resolve_a_LinkClosure_from_a_proper_callable($case)
     {
-        $this->assertInstanceOf(LinkClosure::class, LinkFromCallable::resolve($case));
+        $this->assertInstanceOf(LinkWrapper::class, LinkFromCallable::resolve($case));
     }
 
     public function callable()

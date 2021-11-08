@@ -2,17 +2,9 @@
 
 namespace Tests\Stubs;
 
-use Chainer\Link;
-
-class PayloadLink extends Link
+class PayloadLink
 {
-    /**
-     * Execute link.
-     *
-     * @param $payload
-     * @return mixed
-     */
-    public function handle($payload = null)
+    public function __invoke(mixed $payload): mixed
     {
         return $payload;
     }

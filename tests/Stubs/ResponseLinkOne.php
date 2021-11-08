@@ -2,19 +2,11 @@
 
 namespace Tests\Stubs;
 
-use Chainer\Link;
-
-class ResponseLinkOne extends Link
+class ResponseLinkOne
 {
     public const RESPONSE = "LinkOne response";
 
-    /**
-     * Handle payload.
-     *
-     * @param mixed $payload
-     * @return mixed
-     */
-    public function handle($payload = null)
+    public function __invoke(mixed $payload = null): mixed
     {
         $payload[__CLASS__] = self::RESPONSE;
         return $payload;

@@ -33,55 +33,9 @@ Chain::do(TaskOne::class)
 
 The actions passed to the `Chainer\Chain->then()` method can be any of the following
 
-- [Link Instance](#link-instance)
 - [Chain Instance](#chain-instance)
 - [Invokable Class](#invokable-class) 
 - [Callback / Callable](#callback--callable)
-
-### Link Instance
-
-|:information_source: Link can be an instance or fqn `Chain::do(new FirstAction())`  or `Chain::do(FirstAction::class)` |
-|----------------------------------------------------------------------------------------------------------------------------|
-
-```php
-namespace Examples;
-
-use Chainer\Chain;
-use Chainer\Link;
-
-class FirstAction extends Link
-{
-    public function handle($payload = null)
-    {
-        $payload[] = __METHOD__;
-        return $payload;
-    }
-}
-
-class SecondAction extends Link
-{
-    public function handle($payload = null)
-    {
-        $payload[] = __METHOD__;
-        return $payload;
-    }
-}
-
-$result = Chain::do(FirstAction::class)
-    ->then(SecondAction::class)
-    ->run();
-
-echo json_encode($result); 
-```
-
-Result
-
-```php
-[
-    "Examples\\FirstAction::handle",
-    "Examples\\SecondAction::handle"
-]
-```
 
 ### Chain Instance
 
@@ -89,20 +43,19 @@ Result
 namespace Examples;
 
 use Chainer\Chain;
-use Chainer\Link;
 
-class FirstAction extends Link
+class FirstAction
 {
-    public function handle($payload = null)
+    public function __invoke($payload = null)
     {
         $payload[] = __METHOD__;
         return $payload;
     }
 }
 
-class SecondAction extends Link
+class SecondAction
 {
-    public function handle($payload = null)
+    public function __invoke($payload = null)
     {
         $payload[] = __METHOD__;
         return $payload;
